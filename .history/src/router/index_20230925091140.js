@@ -92,7 +92,7 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const userInfo = VueCookies.get("userInfo");
-  if (to.meta.needLogin && !userInfo) {
+  if (to.meta.needLogin && !userInfo == null) {
     router.push("/login");
   }
   next();
