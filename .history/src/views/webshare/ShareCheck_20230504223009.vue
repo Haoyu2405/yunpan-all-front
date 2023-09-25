@@ -3,7 +3,7 @@
     <div class="body-content">
       <div class="logo">
         <span class="iconfont icon-pan"></span>
-        <span class="name">简存取云盘</span>
+        <span class="name">Easy云盘</span>
       </div>
       <div class="code-panel">
         <div class="file-info">
@@ -52,67 +52,67 @@
 </template>
 
 <script setup>
-import { ref, reactive, getCurrentInstance, nextTick, watch } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
-const { proxy } = getCurrentInstance()
-const router = useRouter()
-const route = useRoute()
+import { ref, reactive, getCurrentInstance, nextTick, watch } from "vue";
+import { useRouter, useRoute } from "vue-router";
+const { proxy } = getCurrentInstance();
+const router = useRouter();
+const route = useRoute();
 
 const api = {
-  getShareInfo: '/showShare/getShareInfo',
-  checkShareCode: '/showShare/checkShareCode'
-}
+  getShareInfo: "/showShare/getShareInfo",
+  checkShareCode: "/showShare/checkShareCode",
+};
 
-const shareId = route.params.shareId
-const shareInfo = ref({})
+const shareId = route.params.shareId;
+const shareInfo = ref({});
 const getShareInfo = async () => {
   let result = await proxy.Request({
     url: api.getShareInfo,
     params: {
-      shareId
-    }
-  })
+      shareId,
+    },
+  });
   if (!result) {
-    return
+    return;
   }
-  shareInfo.value = result.data
-}
-getShareInfo()
+  shareInfo.value = result.data;
+};
+getShareInfo();
 
-const formData = ref({})
-const formDataRef = ref()
+const formData = ref({});
+const formDataRef = ref();
 const rules = {
   code: [
-    { required: true, message: '请输入提取码' },
-    { min: 5, message: '提取码为5位' },
-    { max: 5, message: '提取码为5位' }
-  ]
-}
+    { required: true, message: "请输入提取码" },
+    { min: 5, message: "提取码为5位" },
+    { max: 5, message: "提取码为5位" },
+  ],
+};
 
 const checkShare = async () => {
-  formDataRef.value.validate(async valid => {
+  formDataRef.value.validate(async (valid) => {
     if (!valid) {
-      return
+      return;
     }
     let result = await proxy.Request({
       url: api.checkShareCode,
       params: {
         shareId: shareId,
-        code: formData.value.code
-      }
-    })
+        code: formData.value.code,
+      },
+    });
     if (!result) {
-      return
+      return;
     }
-    router.push(`/share/${shareId}`)
-  })
-}
+    router.push(`/share/${shareId}`);
+  });
+};
 </script>
 
 <style lang="scss" scoped>
 .share {
   height: calc(100vh);
-  background: url('../../assets/share_bg.png');
+  background: url("../../assets/share_bg.png");
   background-repeat: repeat-x;
   background-position: 0 bottom;
   background-color: #eef2f6;

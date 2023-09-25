@@ -163,7 +163,7 @@
 
 
 /* 
-使用个性化图标，在src/views/Framework.vue中通过img引入
+使用 
 .icon-pan:before {
   content: "\e6e2";
 } */

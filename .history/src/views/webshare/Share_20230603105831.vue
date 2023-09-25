@@ -4,7 +4,7 @@
       <div class="header-content">
         <div class="logo" @click="jump">
           <span class="iconfont icon-pan"></span>
-          <span class="name">简存取云盘</span>
+          <span class="name">Easy云盘</span>
         </div>
       </div>
     </div>
@@ -127,173 +127,173 @@
 </template>
 
 <script setup>
-import { ref, reactive, getCurrentInstance, watch } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
-const { proxy } = getCurrentInstance()
-const router = useRouter()
-const route = useRoute()
+import { ref, reactive, getCurrentInstance, watch } from "vue";
+import { useRouter, useRoute } from "vue-router";
+const { proxy } = getCurrentInstance();
+const router = useRouter();
+const route = useRoute();
 const api = {
-  getShareLoginInfo: '/showShare/getShareLoginInfo',
-  loadFileList: '/showShare/loadFileList',
-  createDownloadUrl: '/showShare/createDownloadUrl',
-  download: '/api/showShare/download',
-  cancelShare: '/share/cancelShare',
-  saveShare: '/showShare/saveShare'
-}
+  getShareLoginInfo: "/showShare/getShareLoginInfo",
+  loadFileList: "/showShare/loadFileList",
+  createDownloadUrl: "/showShare/createDownloadUrl",
+  download: "/api/showShare/download",
+  cancelShare: "/share/cancelShare",
+  saveShare: "/showShare/saveShare",
+};
 
-const shareId = route.params.shareId
-const shareInfo = ref({})
+const shareId = route.params.shareId;
+const shareInfo = ref({});
 const getShareInfo = async () => {
   let result = await proxy.Request({
     url: api.getShareLoginInfo,
     showLoading: false,
     params: {
-      shareId
-    }
-  })
+      shareId,
+    },
+  });
   if (!result) {
-    return
+    return;
   }
   if (result.data == null) {
-    router.push('/shareCheck/' + shareId)
-    return
+    router.push("/shareCheck/" + shareId);
+    return;
   }
-  shareInfo.value = result.data
-}
-getShareInfo()
+  shareInfo.value = result.data;
+};
+getShareInfo();
 
 //列表
 const columns = [
   {
-    label: '文件名',
-    prop: 'fileName',
-    scopedSlots: 'fileName'
+    label: "文件名",
+    prop: "fileName",
+    scopedSlots: "fileName",
   },
   {
-    label: '修改时间',
-    prop: 'lastUpdateTime',
-    width: 200
+    label: "修改时间",
+    prop: "lastUpdateTime",
+    width: 200,
   },
   {
-    label: '大小',
-    prop: 'fileSize',
-    scopedSlots: 'fileSize',
-    width: 200
-  }
-]
-const tableData = ref({})
+    label: "大小",
+    prop: "fileSize",
+    scopedSlots: "fileSize",
+    width: 200,
+  },
+];
+const tableData = ref({});
 const tableOptions = {
   extHeight: 80,
-  selectType: 'checkbox'
-}
+  selectType: "checkbox",
+};
 
 const loadDataList = async () => {
   let params = {
     pageNo: tableData.value.pageNo,
     pageSize: tableData.value.pageSize,
     shareId: shareId,
-    filePid: currentFolder.value.fileId
-  }
+    filePid: currentFolder.value.fileId,
+  };
   let result = await proxy.Request({
     url: api.loadFileList,
-    params
-  })
+    params,
+  });
   if (!result) {
-    return
+    return;
   }
-  tableData.value = result.data
-}
+  tableData.value = result.data;
+};
 //展示操作按钮
-const showOp = row => {
-  tableData.value.list.forEach(element => {
-    element.showOp = false
-  })
-  row.showOp = true
-}
+const showOp = (row) => {
+  tableData.value.list.forEach((element) => {
+    element.showOp = false;
+  });
+  row.showOp = true;
+};
 
-const cancelShowOp = row => {
-  row.showOp = false
-}
+const cancelShowOp = (row) => {
+  row.showOp = false;
+};
 
 //多选 批量选择
-const selectFileIdList = ref([])
-const rowSelected = rows => {
-  selectFileIdList.value = []
-  rows.forEach(item => {
-    selectFileIdList.value.push(item.fileId)
-  })
-}
+const selectFileIdList = ref([]);
+const rowSelected = (rows) => {
+  selectFileIdList.value = [];
+  rows.forEach((item) => {
+    selectFileIdList.value.push(item.fileId);
+  });
+};
 
 //目录
-const currentFolder = ref({ fileId: 0 })
-const navChange = data => {
-  const { curFolder } = data
-  currentFolder.value = curFolder
-  loadDataList()
-}
+const currentFolder = ref({ fileId: 0 });
+const navChange = (data) => {
+  const { curFolder } = data;
+  currentFolder.value = curFolder;
+  loadDataList();
+};
 
 //查看
-const previewRef = ref()
-const navigationRef = ref()
-const preview = data => {
+const previewRef = ref();
+const navigationRef = ref();
+const preview = (data) => {
   if (data.folderType == 1) {
-    navigationRef.value.openFolder(data)
-    return
+    navigationRef.value.openFolder(data);
+    return;
   }
-  data.shareId = shareId
-  previewRef.value.showPreview(data, 2)
-}
+  data.shareId = shareId;
+  previewRef.value.showPreview(data, 2);
+};
 
 //下载文件
-const download = async fileId => {
+const download = async (fileId) => {
   let result = await proxy.Request({
-    url: api.createDownloadUrl + '/' + shareId + '/' + fileId
-  })
+    url: api.createDownloadUrl + "/" + shareId + "/" + fileId,
+  });
   if (!result) {
-    return
+    return;
   }
-  window.location.href = api.download + '/' + result.data
-}
+  window.location.href = api.download + "/" + result.data;
+};
 
 //保存到我的网盘
-const folderSelectRef = ref()
-const save2MyPanFileIdArray = []
+const folderSelectRef = ref();
+const save2MyPanFileIdArray = [];
 const save2MyPan = () => {
   if (selectFileIdList.value.length == 0) {
-    return
+    return;
   }
-  if (!proxy.VueCookies.get('userInfo')) {
-    router.push('/login?redirectUrl=' + route.path)
-    return
+  if (!proxy.VueCookies.get("userInfo")) {
+    router.push("/login?redirectUrl=" + route.path);
+    return;
   }
-  save2MyPanFileIdArray.values = selectFileIdList.value
-  folderSelectRef.value.showFolderDialog()
-}
-const save2MyPanSingle = row => {
-  if (!proxy.VueCookies.get('userInfo')) {
-    router.push('/login?redirectUrl=' + route.path)
-    return
+  save2MyPanFileIdArray.values = selectFileIdList.value;
+  folderSelectRef.value.showFolderDialog();
+};
+const save2MyPanSingle = (row) => {
+  if (!proxy.VueCookies.get("userInfo")) {
+    router.push("/login?redirectUrl=" + route.path);
+    return;
   }
-  save2MyPanFileIdArray.values = [row.fileId]
-  folderSelectRef.value.showFolderDialog()
-}
+  save2MyPanFileIdArray.values = [row.fileId];
+  folderSelectRef.value.showFolderDialog();
+};
 //执行保存操作
-const save2MyPanDone = async folderId => {
+const save2MyPanDone = async (folderId) => {
   let result = await proxy.Request({
     url: api.saveShare,
     params: {
       shareId: shareId,
-      shareFileIds: save2MyPanFileIdArray.values.join(','),
-      myFolderId: folderId
-    }
-  })
+      shareFileIds: save2MyPanFileIdArray.values.join(","),
+      myFolderId: folderId,
+    },
+  });
   if (!result) {
-    return
+    return;
   }
-  loadDataList()
-  proxy.Message.success('保存成功')
-  folderSelectRef.value.close()
-}
+  loadDataList();
+  proxy.Message.success("保存成功");
+  folderSelectRef.value.close();
+};
 
 //取消分享
 const cancelShare = () => {
@@ -301,24 +301,24 @@ const cancelShare = () => {
     let result = await proxy.Request({
       url: api.cancelShare,
       params: {
-        shareIds: shareId
-      }
-    })
+        shareIds: shareId,
+      },
+    });
     if (!result) {
-      return
+      return;
     }
-    proxy.Message.success('取消分享成功')
-    router.push('/')
-  })
-}
+    proxy.Message.success("取消分享成功");
+    router.push("/");
+  });
+};
 
 const jump = () => {
-  router.push('/')
-}
+  router.push("/");
+};
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/file.list.scss';
+@import "@/assets/file.list.scss";
 .header {
   width: 100%;
   position: fixed;

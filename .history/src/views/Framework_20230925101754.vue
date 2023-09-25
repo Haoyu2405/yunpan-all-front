@@ -2,10 +2,10 @@
   <div class="framework">
     <div class="header">
       <div class="logo">
-        <!-- <span class="iconfont icon-pan"></span> -->
+        <!-- <span class="iconfont icon-pan"></span> --> 
         <!-- 使用个性化图标 -->
-        <img src="/favicon.ico" alt="" />
-        <span class="name">简存取云盘</span>
+        <img src="/favicon.ico" alt="">
+        <span class="name"> 云盘</span>
       </div>
       <div class="right-panel">
         <el-popover
@@ -63,7 +63,7 @@
               @click="jump(item)"
               :class="[
                 'menu-item',
-                item.menuCode == currentMenu.menuCode ? 'active' : ''
+                item.menuCode == currentMenu.menuCode ? 'active' : '',
               ]"
             >
               <div :class="['iconfont', 'icon-' + item.icon]"></div>
@@ -133,217 +133,217 @@
 </template>
 
 <script setup>
-import UpdateAvatar from './UpdateAvatar.vue'
-import UpdatePassword from './UpdatePassword.vue'
-import Uploader from '@/views/main/Uploader.vue'
+import UpdateAvatar from "./UpdateAvatar.vue";
+import UpdatePassword from "./UpdatePassword.vue";
+import Uploader from "@/views/main/Uploader.vue";
 import {
   ref,
   reactive,
   getCurrentInstance,
   watch,
   nextTick,
-  computed
-} from 'vue'
-import { useRouter, useRoute } from 'vue-router'
-const { proxy } = getCurrentInstance()
-const router = useRouter()
-const route = useRoute()
+  computed,
+} from "vue";
+import { useRouter, useRoute } from "vue-router";
+const { proxy } = getCurrentInstance();
+const router = useRouter();
+const route = useRoute();
 
 const api = {
-  getUseSpace: '/getUseSpace',
-  logout: '/logout'
-}
+  getUseSpace: "/getUseSpace",
+  logout: "/logout",
+};
 
 //显示上传窗口
-const showUploader = ref(false)
+const showUploader = ref(false);
 
 //添加文件
-const uploaderRef = ref()
-const addFile = data => {
-  const { file, filePid } = data
-  showUploader.value = true
-  uploaderRef.value.addFile(file, filePid)
-}
+const uploaderRef = ref();
+const addFile = (data) => {
+  const { file, filePid } = data;
+  showUploader.value = true;
+  uploaderRef.value.addFile(file, filePid);
+};
 
 //上传文件回调
-const routerViewRef = ref()
+const routerViewRef = ref();
 const uploadCallbackHandler = () => {
   nextTick(() => {
-    routerViewRef.value.reload()
-    getUseSpace()
-  })
-}
+    routerViewRef.value.reload();
+    getUseSpace();
+  });
+};
 
-const timestamp = ref(0)
+const timestamp = ref(0);
 //获取用户信息
-const userInfo = ref(proxy.VueCookies.get('userInfo'))
+const userInfo = ref(proxy.VueCookies.get("userInfo"));
 const menus = [
   {
-    icon: 'cloude',
-    name: '首页',
-    menuCode: 'main',
-    path: '/main/all',
+    icon: "cloude",
+    name: "首页",
+    menuCode: "main",
+    path: "/main/all",
     allShow: true,
     children: [
       {
-        icon: 'all',
-        name: '全部',
-        category: 'all',
-        path: '/main/all'
+        icon: "all",
+        name: "全部",
+        category: "all",
+        path: "/main/all",
       },
       {
-        icon: 'video',
-        name: '视频',
-        category: 'video',
-        path: '/main/video'
+        icon: "video",
+        name: "视频",
+        category: "video",
+        path: "/main/video",
       },
       {
-        icon: 'music',
-        name: '音频',
-        category: 'music',
-        path: '/main/music'
+        icon: "music",
+        name: "音频",
+        category: "music",
+        path: "/main/music",
       },
       {
-        icon: 'image',
-        name: '图片',
-        category: 'image',
-        path: '/main/image'
+        icon: "image",
+        name: "图片",
+        category: "image",
+        path: "/main/image",
       },
       {
-        icon: 'doc',
-        name: '文档',
-        category: 'doc',
-        path: '/main/doc'
+        icon: "doc",
+        name: "文档",
+        category: "doc",
+        path: "/main/doc",
       },
       {
-        icon: 'more',
-        name: '其他',
-        category: 'others',
-        path: '/main/others'
-      }
-    ]
+        icon: "more",
+        name: "其他",
+        category: "others",
+        path: "/main/others",
+      },
+    ],
   },
   {
-    path: '/myshare',
-    icon: 'share',
-    name: '分享',
-    menuCode: 'share',
+    path: "/myshare",
+    icon: "share",
+    name: "分享",
+    menuCode: "share",
     allShow: true,
     children: [
       {
-        name: '分享记录',
-        path: '/myshare'
-      }
-    ]
+        name: "分享记录",
+        path: "/myshare",
+      },
+    ],
   },
   {
-    path: '/recycle',
-    icon: 'del',
-    name: '回收站',
-    menuCode: 'recycle',
-    tips: '回收站为你保存10天内删除的文件',
+    path: "/recycle",
+    icon: "del",
+    name: "回收站",
+    menuCode: "recycle",
+    tips: "回收站为你保存10天内删除的文件",
     allShow: true,
     children: [
       {
-        name: '删除的文件',
-        path: '/recycle'
-      }
-    ]
+        name: "删除的文件",
+        path: "/recycle",
+      },
+    ],
   },
   {
-    path: '/settings/fileList',
-    icon: 'settings',
-    name: '设置',
-    menuCode: 'settings',
+    path: "/settings/fileList",
+    icon: "settings",
+    name: "设置",
+    menuCode: "settings",
     allShow: false,
     children: [
       {
-        name: '用户文件',
-        path: '/settings/fileList'
+        name: "用户文件",
+        path: "/settings/fileList",
       },
       {
-        name: '用户管理',
-        path: '/settings/userList'
+        name: "用户管理",
+        path: "/settings/userList",
       },
       {
-        path: '/settings/sysSetting',
-        name: '系统设置'
-      }
-    ]
-  }
-]
+        path: "/settings/sysSetting",
+        name: "系统设置",
+      },
+    ],
+  },
+];
 
-const currentMenu = ref({})
-const currentPath = ref()
+const currentMenu = ref({});
+const currentPath = ref();
 
-const jump = data => {
+const jump = (data) => {
   if (!data.path || data.menuCode == currentMenu.value.menuCode) {
-    return
+    return;
   }
-  router.push(data.path)
-}
+  router.push(data.path);
+};
 
 const setMenu = (menuCode, path) => {
-  const menu = menus.find(item => {
-    return item.menuCode === menuCode
-  })
-  currentMenu.value = menu
-  currentPath.value = path
-}
+  const menu = menus.find((item) => {
+    return item.menuCode === menuCode;
+  });
+  currentMenu.value = menu;
+  currentPath.value = path;
+};
 
 watch(
   () => route,
   (newVal, oldVal) => {
     if (newVal.meta.menuCode) {
-      setMenu(newVal.meta.menuCode, newVal.path)
+      setMenu(newVal.meta.menuCode, newVal.path);
     }
   },
   { immediate: true, deep: true }
-)
+);
 
 //修改头像
-const updateAvatarRef = ref()
+const updateAvatarRef = ref();
 const updateAvatar = () => {
-  updateAvatarRef.value.show(userInfo.value)
-}
+  updateAvatarRef.value.show(userInfo.value);
+};
 const reloadAvatar = () => {
-  userInfo.value = proxy.VueCookies.get('userInfo')
-  timestamp.value = new Date().getTime()
-}
+  userInfo.value = proxy.VueCookies.get("userInfo");
+  timestamp.value = new Date().getTime();
+};
 
 //修改密码
-const updatePasswordRef = ref()
+const updatePasswordRef = ref();
 const updatePassword = () => {
-  updatePasswordRef.value.show()
-}
+  updatePasswordRef.value.show();
+};
 
 //退出登录
 const logout = () => {
   proxy.Confirm(`你确定要删除退出吗`, async () => {
     let result = await proxy.Request({
-      url: api.logout
-    })
+      url: api.logout,
+    });
     if (!result) {
-      return
+      return;
     }
-    proxy.VueCookies.remove('userInfo')
-    router.push('/login')
-  })
-}
+    proxy.VueCookies.remove("userInfo");
+    router.push("/login");
+  });
+};
 
 //使用空间
-const useSpaceInfo = ref({ useSpace: 0, totalSpace: 1 })
+const useSpaceInfo = ref({ useSpace: 0, totalSpace: 1 });
 const getUseSpace = async () => {
   let result = await proxy.Request({
     url: api.getUseSpace,
-    showLoading: false
-  })
+    showLoading: false,
+  });
   if (!result) {
-    return
+    return;
   }
-  useSpaceInfo.value = result.data
-}
-getUseSpace()
+  useSpaceInfo.value = result.data;
+};
+getUseSpace();
 </script>
 
 <style lang="scss" scoped>

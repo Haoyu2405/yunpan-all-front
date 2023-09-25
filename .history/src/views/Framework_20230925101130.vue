@@ -2,9 +2,7 @@
   <div class="framework">
     <div class="header">
       <div class="logo">
-        <!-- <span class="iconfont icon-pan"></span> -->
-        <!-- 使用个性化图标 -->
-        <img src="/favicon.ico" alt="" />
+        <span class="iconfont icon-pan"></span>
         <span class="name">简存取云盘</span>
       </div>
       <div class="right-panel">
