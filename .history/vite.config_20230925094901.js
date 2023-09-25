@@ -6,12 +6,7 @@ import { CodeInspectorPlugin } from 'code-inspector-plugin'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [
-    vue(),
-    CodeInspectorPlugin({
-      bundler: 'vite'
-    })
-  ],
+  plugins: [vue()],
   define: {
     'process.env': {}
   },
@@ -24,11 +19,11 @@ export default defineConfig({
     port: 1025,
     hmr: true,
     proxy: {
-      '/api': {
-        target: 'http://localhost:7090',
+      "/api": {
+        target: "http://localhost:7090",
         changeOrigin: true,
         pathRewrite: {
-          '^api': '/api'
+          "^api": "/api"
         }
       }
     }
@@ -37,23 +32,20 @@ export default defineConfig({
     chunkSizeWarningLimit: 3000,
     rollupOptions: {
       output: {
-        manualChunks (id) {
+        manualChunks(id) {
           if (id.includes('node_modules')) {
-            return id
-              .toString()
-              .split('node_modules/')[1]
-              .split('/')[0]
-              .toString()
+            return id.toString().split('node_modules/')[1].split('/')[0].toString();
           }
         }
       }
     },
-    chunkFileNames: chunkInfo => {
+    chunkFileNames: (chunkInfo) => {
       const facadeModuleId = chunkInfo.facadeModuleId
         ? chunkInfo.facadeModuleId.split('/')
-        : []
-      const fileName = facadeModuleId[facadeModuleId.length - 2] || '[name]'
-      return `js/${fileName}/[name].[hash].js`
+        : [];
+      const fileName =
+        facadeModuleId[facadeModuleId.length - 2] || '[name]';
+      return `js/${fileName}/[name].[hash].js`;
     }
   }
 })
