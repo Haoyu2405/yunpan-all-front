@@ -57,7 +57,7 @@
     <div class="body">
       <div class="left-sider">
         <div class="menu-list">
-          <template v-for="(item, i) in menus" :key="i">
+          <template v-for="item in menus" :key="">
             <div
               v-if="item.allShow || (!item.allShow && userInfo.admin)"
               @click="jump(item)"
