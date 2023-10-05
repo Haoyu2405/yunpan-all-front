@@ -21,12 +21,11 @@ export default defineConfig({
     }
   },
   server: {
-    // port: 1025,
+    port: 80,
     hmr: true,
     proxy: {
       '/api': {
-        // target: 'http://localhost:7090/',
-        target: 'http://116.63.84.9:7090/api',
+        target: 'http://localhoa=:7090/',
         changeOrigin: true,
         pathRewrite: {
           '^/api': '/api'
